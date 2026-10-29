@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Практика МСФО</title>
+<meta name="description" content="Трансформация отчётности РСБУ → МСФО для среднего бизнеса. Бесплатная оценка объёма и стоимости по ОСВ за 3 рабочих дня.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,600&family=Golos+Text:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Макет: рабочий документ — основной текст слева, узкое поле справа со ссылками на стандарты */
+:root {
+  --paper: #F5F7F8;
+  --sheet: #FFFFFF;
+  --ink: #16212A;
+  --muted: #56636E;
+  --rule: #D9E0E5;
+  --accent: #0E5C6B;
+  --accent-soft: #E3EFF1;
+  --tick: #B8461B;
+  --font-display: "Literata", Georgia, "Times New Roman", serif;
+  --font-body: "Golos Text", "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --step-0: 1rem;
+  --step-1: 1.2rem;
+  --step-2: 1.55rem;
+  --step-3: clamp(1.9rem, 4.2vw, 2.9rem);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0F1519; --sheet: #161F25; --ink: #E3E9ED; --muted: #9AA8B2;
+    --rule: #2A363F; --accent: #5FB6C4; --accent-soft: #19313A; --tick: #F08B5E;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0F1519; --sheet: #161F25; --ink: #E3E9ED; --muted: #9AA8B2;
+  --rule: #2A363F; --accent: #5FB6C4; --accent-soft: #19313A; --tick: #F08B5E;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* Шапка */
+.top { border-bottom: 1px solid var(--rule); }
+.top .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; padding-block: 18px; }
+.brand { font-family: var(--font-display); font-weight: 600; font-size: var(--step-1); letter-spacing: 0.01em; }
+.brand span { color: var(--muted); font-family: var(--font-body); font-weight: 400; font-size: 0.9rem; margin-left: 10px; }
+.top-contact { font-size: 0.95rem; color: var(--muted); display: flex; gap: 18px; flex-wrap: wrap; }
+.top-contact a { text-decoration: none; font-weight: 500; }
+
+/* Первый экран */
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 48px; align-items: center; padding-block: 64px 56px; }
+.eyebrow { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin: 0 0 18px; }
+h1 { font-family: var(--font-display); font-weight: 600; font-size: var(--step-3); line-height: 1.12; text-wrap: balance; margin: 0 0 22px; letter-spacing: -0.01em; }
+.lead { font-size: var(--step-1); color: var(--muted); max-width: 34em; margin: 0 0 30px; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--accent); color: var(--sheet);
+  font-weight: 600; text-decoration: none; padding: 14px 22px; border-radius: 6px;
+}
+.btn:hover { filter: brightness(1.08); }
+.cta-note { font-size: 0.92rem; color: var(--muted); max-width: 22em; }
+
+/* Мост — фрагмент рабочего документа */
+.sheet {
+  background: var(--sheet); border: 1px solid var(--rule); border-radius: 4px;
+  box-shadow: 0 1px 0 var(--rule), 0 18px 40px -28px rgba(10, 30, 40, 0.35);
+}
+.sheet-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 14px 18px 10px; border-bottom: 1px solid var(--rule); font-size: 0.82rem; color: var(--muted); }
+.sheet-head b { color: var(--ink); font-weight: 600; }
+.table-scroll { overflow-x: auto; }
+table.bridge { width: 100%; border-collapse: collapse; font-size: 0.86rem; min-width: 460px; }
+.bridge th, .bridge td { padding: 9px 12px; text-align: right; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.bridge th { font-family: var(--font-mono); font-weight: 500; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.02em; vertical-align: bottom; }
+.bridge th small { display: block; font-family: var(--font-body); font-size: 0.72rem; letter-spacing: 0; }
+.bridge td:first-child, .bridge th:first-child { text-align: left; white-space: normal; }
+.bridge td { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.bridge td:first-child { font-family: var(--font-body); }
+.bridge td.adj { color: var(--accent); }
+.bridge td.ifrs { font-weight: 500; }
+.bridge tr.total td { border-bottom: 0; font-weight: 600; }
+.bridge .z { color: var(--rule); }
+.checks { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 12px 18px 14px; border-top: 1px solid var(--rule); font-size: 0.8rem; color: var(--muted); }
+.checks span::before { content: "✓"; color: var(--tick); font-weight: 600; margin-right: 6px; }
+.sheet-foot { padding: 0 18px 14px; font-size: 0.75rem; color: var(--muted); }
+
+/* Разделы */
+section.block { border-top: 1px solid var(--rule); }
+section.block .wrap { display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: 48px; padding-block: 56px; }
+h2 { font-family: var(--font-display); font-weight: 600; font-size: var(--step-2); line-height: 1.25; margin: 0 0 22px; text-wrap: balance; }
+.body p { max-width: 40em; margin: 0 0 14px; }
+.margin { font-size: 0.85rem; color: var(--muted); border-left: 1px solid var(--rule); padding-left: 18px; align-self: start; display: grid; gap: 10px; }
+.margin .ref { font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent); }
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 32px; }
+.item h3 { font-size: 1.02rem; font-weight: 600; margin: 0 0 6px; }
+.item p { margin: 0; color: var(--muted); }
+
+ul.deliver { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; max-width: 44em; }
+ul.deliver li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; }
+ul.deliver li::before { content: "✓"; color: var(--tick); font-weight: 600; }
+ul.deliver b { font-weight: 600; }
+
+ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 0; display: grid; gap: 22px; max-width: 44em; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-display); font-size: 1.5rem; line-height: 1.1; color: var(--accent); }
+ol.steps h3 { margin: 0 0 4px; font-size: 1.02rem; }
+ol.steps p { margin: 0; color: var(--muted); }
+
+.bio { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; max-width: 44em; }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.fact { border-top: 2px solid var(--accent); padding-top: 10px; }
+.fact b { display: block; font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; }
+.fact span { font-size: 0.88rem; color: var(--muted); }
+
+.price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin: 0 0 18px; }
+.price b { font-family: var(--font-display); font-size: 2rem; font-weight: 600; }
+.price span { color: var(--muted); }
+
+/* Контакты */
+.contact { background: var(--accent-soft); border-top: 1px solid var(--rule); }
+.contact .wrap { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 40px; padding-block: 56px; align-items: center; }
+.contact-card { background: var(--sheet); border: 1px solid var(--rule); border-radius: 4px; padding: 22px; display: grid; gap: 14px; }
+.row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 14px; }
+.row .label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.row .val { font-family: var(--font-mono); font-size: 1.05rem; user-select: all; }
+.copy { font: inherit; font-size: 0.85rem; background: transparent; border: 1px solid var(--rule); color: var(--ink); padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+.copy:hover { border-color: var(--accent); }
+
+footer .wrap { padding-block: 24px 32px; font-size: 0.82rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+
+@media (max-width: 860px) {
+  .hero .wrap, section.block .wrap, .contact .wrap { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .hero .wrap { padding-block: 40px; }
+  .margin { border-left: 0; border-top: 1px solid var(--rule); padding: 14px 0 0; }
+}
+@media (max-width: 560px) {
+  .grid-2, .facts { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheet { animation: rise 0.6s ease-out both; }
+  @keyframes rise { from { transform: translateY(8px); } to { transform: none; } }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">Практика МСФО<span>Лейла Кожеватова</span></div>
+    <div class="top-contact">
+      <a href="https://t.me/praktika_msfo">Telegram @praktika_msfo</a>
+      <span>+7 999 023-05-22</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Трансформация РСБУ → МСФО</p>
+        <h1>МСФО-отчётность для среднего бизнеса к дате, которую назвал банк или аудитор</h1>
+        <p class="lead">Готовлю полный пакет по МСФО из вашей отчётности по РСБУ: формы, примечания, мост РСБУ → МСФО и работу с аудитором до выпуска.</p>
+        <div class="cta-row">
+          <a class="btn" href="https://t.me/praktika_msfo">Прислать ОСВ на оценку</a>
+          <p class="cta-note">Бесплатно и под NDA: за 3 рабочих дня верну перечень корректировок, срок и стоимость.</p>
+        </div>
+      </div>
+
+      <figure class="sheet" style="margin:0" aria-label="Пример моста РСБУ → МСФО">
+        <div class="sheet-head"><b>Мост РСБУ → МСФО, 31.12.2026</b><span>ООО «Пример» · тыс. руб.</span></div>
+        <div class="table-scroll">
+          <table class="bridge">
+            <thead>
+              <tr>
+                <th>Статья</th>
+                <th>РСБУ</th>
+                <th>ADJ-04<small>аренда</small></th>
+                <th>ADJ-05<small>ECL</small></th>
+                <th>ADJ-10<small>списание</small></th>
+                <th>МСФО</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Активы в форме права пользования</td><td>0</td><td class="adj">250</td><td class="z">–</td><td class="z">–</td><td class="ifrs">250</td></tr>
+              <tr><td>Торговая и прочая дебиторская задолженность</td><td>700</td><td class="z">–</td><td class="adj">−70</td><td class="z">–</td><td class="ifrs">630</td></tr>
+              <tr><td>Нераспределённая прибыль</td><td>2&nbsp;010</td><td class="z">–</td><td class="adj">−70</td><td class="adj">−80</td><td class="ifrs">1&nbsp;860</td></tr>
+              <tr><td>Обязательства по аренде</td><td>0</td><td class="adj">250</td><td class="z">–</td><td class="z">–</td><td class="ifrs">250</td></tr>
+              <tr class="total"><td>Итого активы</td><td>2&nbsp;550</td><td class="adj">250</td><td class="adj">−70</td><td class="adj">−50</td><td class="ifrs">2&nbsp;680</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="checks"><span>Активы = Капитал + Обязательства</span><span>Мост сходится по каждой статье</span><span>Нет «прочего» выше существенности</span></div>
+        <figcaption class="sheet-foot">Пример на синтетических данных. Так выглядит часть пакета, которую получает ваш аудитор.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block" id="when">
+    <div class="wrap">
+      <div class="body">
+        <h2>Когда компании нужен МСФО</h2>
+        <div class="grid-2">
+          <div class="item"><h3>Требует банк</h3><p>Условия кредита или ковенанты завязаны на отчётность по МСФО, и банк называет дату.</p></div>
+          <div class="item"><h3>Требует головная компания</h3><p>Отчётность нужна в формате и сроки материнской компании или холдинга.</p></div>
+          <div class="item"><h3>Аудит по МСФО</h3><p>Отчётность должна пройти аудит, и аудитору нужен пакет, который можно проверить.</p></div>
+          <div class="item"><h3>Облигации и инвесторы</h3><p>Выпуск облигаций, рейтинг или новый инвестор, которым нужна отчётность по МСФО.</p></div>
+        </div>
+      </div>
+      <aside class="margin">
+        <span>Первая отчётность по МСФО готовится по отдельному стандарту и требует вступительного баланса на дату перехода.</span>
+        <span class="ref">IFRS 1</span>
+      </aside>
+    </div>
+  </section>
+
+  <section class="block" id="what">
+    <div class="wrap">
+      <div class="body">
+        <h2>Что вы получаете</h2>
+        <ul class="deliver">
+          <li><span><b>Комплект отчётности по МСФО:</b> отчёт о финансовом положении, отчёт о прибыли или убытке и прочем совокупном доходе, отчёт о движении денежных средств, отчёт об изменениях в капитале, примечания.</span></li>
+          <li><span><b>Мост РСБУ → МСФО:</b> по каждой статье видно, из чего сложилась сумма.</span></li>
+          <li><span><b>Реестр корректировок:</b> у каждой корректировки есть ссылка на пункт стандарта, расчёт и источник в ваших данных.</span></li>
+          <li><span><b>Сопровождение аудита:</b> ответы на вопросы аудитора и правки по его замечаниям до выпуска отчётности.</span></li>
+        </ul>
+      </div>
+      <aside class="margin">
+        <span>Типичные корректировки первого цикла:</span>
+        <span><span class="ref">IFRS 16</span> аренда</span>
+        <span><span class="ref">IFRS 9</span> резерв по дебиторской задолженности</span>
+        <span><span class="ref">IAS 12</span> отложенные налоги</span>
+        <span><span class="ref">IAS 16</span> основные средства</span>
+        <span><span class="ref">IAS 19</span> отпуска и бонусы</span>
+      </aside>
+    </div>
+  </section>
+
+  <section class="block" id="how">
+    <div class="wrap">
+      <div class="body">
+        <h2>Как мы работаем</h2>
+        <ol class="steps">
+          <li><div><h3>Оценка объёма</h3><p>Вы присылаете ОСВ за год и учётную политику под NDA. За 3 рабочих дня я возвращаю перечень ключевых корректировок, список нужных документов, срок и стоимость. Бесплатно и без обязательств.</p></div></li>
+          <li><div><h3>Договор и сбор данных</h3><p>Список запросов с датами и ответственными с вашей стороны, чтобы данные приходили вовремя.</p></div></li>
+          <li><div><h3>Трансформация и пакет</h3><p>Промежуточные версии согласуем с финансовым директором. Каждая версия проходит автоматические проверки до отправки вам.</p></div></li>
+          <li><div><h3>Аудит</h3><p>Работаю с вашим аудитором до выпуска отчётности.</p></div></li>
+        </ol>
+      </div>
+      <aside class="margin">
+        <span>Каждая компания индивидуальна: учётная политика, состав корректировок и раскрытий определяются вашим бизнесом. Поэтому цена считается после оценки объёма.</span>
+      </aside>
+    </div>
+  </section>
+
+  <section class="block" id="checks">
+    <div class="wrap">
+      <div class="body">
+        <h2>Как проверяется пакет</h2>
+        <p>Перед каждой выдачей пакет проходит проверки. Если хотя бы одна не сходится, версия к вам не уходит.</p>
+        <ul class="deliver">
+          <li><span>Активы равны капиталу и обязательствам до и после корректировок.</span></li>
+          <li><span>Денежные средства в отчёте о движении денежных средств совпадают с балансом.</span></li>
+          <li><span>Каждое число в примечаниях совпадает с формой.</span></li>
+          <li><span>Мост РСБУ → МСФО сходится по каждой статье.</span></li>
+          <li><span>Нет статей «прочее» выше порога существенности без расшифровки.</span></li>
+        </ul>
+      </div>
+      <aside class="margin">
+        <span>Аудитор видит путь каждого числа: файл, расчёт, корректировка, строка формы.</span>
+      </aside>
+    </div>
+  </section>
+
+  <section class="block" id="who">
+    <div class="wrap">
+      <div class="body bio">
+        <h2 style="margin:0">Кто делает</h2>
+        <p style="margin:0">Лейла Кожеватова. 10 лет готовлю отчётность по МСФО: работала в отчётности немецкой дочерней компании Северстали и международной группы (Бельгия), участвовала в подготовке консолидированной отчётности группы Газстройпром, вела клиентов на аутсорсинге в UCMS Group, готовила трансформацию для средних производственных компаний.</p>
+        <div class="facts">
+          <div class="fact"><b>10 лет</b><span>в МСФО-отчётности</span></div>
+          <div class="fact"><b>260 часов</b><span>профессиональная переподготовка по МСФО</span></div>
+          <div class="fact"><b>Аутсорсинг</b><span>несколько клиентов, сроки, процесс</span></div>
+        </div>
+      </div>
+      <aside class="margin">
+        <span>Квалификация «Менеджер по международной отчётности»: диплом о профессиональной переподготовке Академии Б1 (бывшая практика EY в России), итоговый экзамен.</span>
+      </aside>
+    </div>
+  </section>
+
+  <section class="block" id="price">
+    <div class="wrap">
+      <div class="body">
+        <h2>Стоимость</h2>
+        <div class="price"><b>от 1 млн ₽</b><span>за отчётный период</span></div>
+        <p>Итоговая цена с границами объёма фиксируется в договоре после оценки. На неё влияют число юрлиц и консолидация, первое применение МСФО, аренда и валютные операции, сроки.</p>
+        <p>Не входят: аудит, налоговые консультации, восстановление учёта за прошлые периоды.</p>
+      </div>
+      <aside class="margin">
+        <span>Данные обрабатываются только на рабочих компьютерах команды. NDA подписываем до передачи файлов.</span>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div>
+      <h2>Пришлите ОСВ на оценку</h2>
+      <p style="max-width:34em;margin:0">ОСВ за год и учётная политика — этого достаточно, чтобы через 3 рабочих дня назвать срок и стоимость. Если нужно, сначала подпишем NDA.</p>
+    </div>
+    <div class="contact-card">
+      <div class="row"><span class="label">Telegram</span><a class="val" href="https://t.me/praktika_msfo">@praktika_msfo</a></div>
+      <div class="row"><span class="label">Телефон</span><span class="val" id="phone">+7 999 023-05-22</span><button class="copy" id="copy-phone" type="button">Скопировать</button></div>
+      <a class="btn" href="https://t.me/praktika_msfo" style="justify-content:center">Написать в Telegram</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>ИП Кожеватова Л. Х.</span>
+    <span>Подготовка отчётности по МСФО. Не является аудиторской услугой.</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("copy-phone").addEventListener("click", function () {
+    var btn = this, text = document.getElementById("phone").textContent;
+    function done(msg) { btn.textContent = msg; setTimeout(function () { btn.textContent = "Скопировать"; }, 1800); }
+    function fallback() {
+      var r = document.createRange(); r.selectNodeContents(document.getElementById("phone"));
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); done("Выделено");
+    }
+    try {
+      navigator.clipboard.writeText(text).then(function () { done("Скопировано"); }, fallback);
+    } catch (e) { fallback(); }
+  });
+</script>
+</body>
+</html>
