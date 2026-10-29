@@ -113,6 +113,7 @@ h2 { font-family: var(--font-display); font-weight: 600; font-size: var(--step-2
 .margin .ref { font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent); }
 
 .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 32px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 28px; }
 .item h3 { font-size: 1.02rem; font-weight: 600; margin: 0 0 6px; }
 .item p { margin: 0; color: var(--muted); }
 
@@ -152,6 +153,8 @@ ol.steps p { margin: 0; color: var(--muted); }
 .calc-result ul { list-style: none; padding: 0; margin: 0 0 18px; display: grid; gap: 10px; }
 .calc-result li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; }
 .calc-result li::before { content: "✓"; color: var(--tick); font-weight: 600; }
+.calc-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 4px; }
+.calc-price { font-family: var(--font-display); font-size: 2rem; font-weight: 600; margin: 0 0 18px; font-variant-numeric: tabular-nums; }
 .calc-flag { border-left: 3px solid var(--tick); padding: 8px 14px; margin: 0 0 18px; background: var(--paper); }
 .calc-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 @media (prefers-reduced-motion: reduce) { .calc-bar i { transition: none; } }
@@ -174,7 +177,7 @@ footer .wrap { padding-block: 24px 32px; font-size: 0.82rem; color: var(--muted)
   .margin { border-left: 0; border-top: 1px solid var(--rule); padding: 14px 0 0; }
 }
 @media (max-width: 560px) {
-  .grid-2, .facts { grid-template-columns: minmax(0, 1fr); }
+  .grid-2, .grid-3, .facts { grid-template-columns: minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: no-preference) {
   .sheet { animation: rise 0.6s ease-out both; }
@@ -198,7 +201,7 @@ footer .wrap { padding-block: 24px 32px; font-size: 0.82rem; color: var(--muted)
     <div class="wrap">
       <div>
         <p class="eyebrow">Трансформация РСБУ → МСФО</p>
-        <h1>МСФО-отчётность для среднего бизнеса к дате, которую назвал банк или аудитор</h1>
+        <h1>МСФО-отчётность для среднего бизнеса к дате, которую назвал аудитор или головная компания</h1>
         <p class="lead">Готовлю полный пакет по МСФО из вашей отчётности по РСБУ: формы, примечания, мост РСБУ → МСФО и работу с аудитором до выпуска.</p>
         <div class="cta-row">
           <a class="btn" href="https://t.me/praktika_msfo">Прислать ОСВ на оценку</a>
@@ -239,8 +242,7 @@ footer .wrap { padding-block: 24px 32px; font-size: 0.82rem; color: var(--muted)
     <div class="wrap">
       <div class="body">
         <h2>Когда компании нужен МСФО</h2>
-        <div class="grid-2">
-          <div class="item"><h3>Требует банк</h3><p>Условия кредита или ковенанты завязаны на отчётность по МСФО, и банк называет дату.</p></div>
+        <div class="grid-3">
           <div class="item"><h3>Требует головная компания</h3><p>Отчётность нужна в формате и сроки материнской компании или холдинга.</p></div>
           <div class="item"><h3>Аудит по МСФО</h3><p>Отчётность должна пройти аудит, и аудитору нужен пакет, который можно проверить.</p></div>
           <div class="item"><h3>Облигации и инвесторы</h3><p>Выпуск облигаций, рейтинг или новый инвестор, которым нужна отчётность по МСФО.</p></div>
@@ -346,8 +348,8 @@ footer .wrap { padding-block: 24px 32px; font-size: 0.82rem; color: var(--muted)
   <section class="block" id="calc">
     <div class="wrap">
       <div class="body">
-        <h2>Что определит объём работ</h2>
-        <p>Пять вопросов, около минуты. В конце — что именно повлияет на объём и срок в вашем случае.</p>
+        <h2>Ориентир цены и объёма</h2>
+        <p>Пять вопросов, около минуты. В конце — ориентир стоимости и что именно повлияет на объём и срок в вашем случае.</p>
         <div class="calc" aria-live="polite">
           <div id="calc-q">
             <div class="calc-progress"><span id="calc-count">Вопрос 1 из 5</span><div class="calc-bar"><i id="calc-bar"></i></div></div>
@@ -356,10 +358,12 @@ footer .wrap { padding-block: 24px 32px; font-size: 0.82rem; color: var(--muted)
             <button class="calc-link" id="calc-back" type="button" hidden>← Назад</button>
           </div>
           <div class="calc-result" id="calc-result" hidden>
-            <h3>В вашем случае на объём и срок повлияют</h3>
+            <p class="calc-label">Ориентир стоимости за отчётный период</p>
+            <p class="calc-price" id="calc-price"></p>
+            <h3>На объём и срок повлияют</h3>
             <ul id="calc-list"></ul>
             <p class="calc-flag" id="calc-flag" hidden>Срок сжатый. Это решаемо, но график и запросы данных нужно согласовать сразу.</p>
-            <p>Точную стоимость и срок назову после оценки по ОСВ — бесплатно, за 3 рабочих дня.</p>
+            <p>Это ориентир до просмотра ваших данных. Точную стоимость и срок назову после оценки по ОСВ — бесплатно, за 3 рабочих дня. Цена фиксируется в договоре вместе с границами объёма.</p>
             <div class="calc-actions">
               <a class="btn" href="https://t.me/praktika_msfo">Написать в Telegram</a>
               <button class="copy" id="calc-copy" type="button">Скопировать ответы</button>
@@ -414,17 +418,17 @@ footer .wrap { padding-block: 24px 32px; font-size: 0.82rem; color: var(--muted)
 <script>
 (function () {
   "use strict";
-  // Цены в калькулятор не выводятся, пока не утверждены (marketing/landing.md).
+  // Модель цены — marketing/pricing.md (предложение, ожидает утверждения).
+  // Цена зависит только от структуры; остальные ответы — пункты «что повлияет на объём».
   var QUESTIONS = [
     { title: "Для чего нужна отчётность по МСФО?", opts: [
-      { label: "Требует банк", note: "Требования кредитного договора: формат, сроки, ковенанты" },
       { label: "Требует головная компания", note: "Формат и график отчётности материнской компании" },
       { label: "Обязательный аудит", note: "Работа с аудитором до выпуска заключения" },
       { label: "Облигации, IPO или инвесторы", note: "Аудированная отчётность к дате размещения и раскрытия для рынка капитала" } ] },
     { title: "Структура компании", opts: [
-      { label: "Одно юрлицо", note: null },
-      { label: "Группа из 2–5 компаний", note: "Консолидация: внутригрупповые обороты и остатки, доли участия" },
-      { label: "Группа больше 5 компаний", note: "Консолидация большой группы: элиминации, неконтролирующие доли, единая учётная политика" } ] },
+      { label: "Одно юрлицо", price: [1000000, 1300000], note: null },
+      { label: "Группа из 2–5 компаний", price: [2000000, 2600000], note: "Консолидация: внутригрупповые обороты и остатки, доли участия" },
+      { label: "Группа больше 5 компаний", price: null, note: "Консолидация большой группы: элиминации, неконтролирующие доли, единая учётная политика" } ] },
     { title: "Готовили ли отчётность по МСФО раньше?", opts: [
       { label: "Нет, это первый раз", note: "Первое применение МСФО (IFRS 1): вступительный баланс на дату перехода и сравнительные данные" },
       { label: "Да, есть прошлогодняя", note: null } ] },
@@ -460,7 +464,15 @@ footer .wrap { padding-block: 24px 32px; font-size: 0.82rem; color: var(--muted)
     $("calc-back").hidden = step === 0;
   }
 
+  function fmtM(v) { return (Math.round(v / 100000) / 10).toFixed(1).replace(".", ","); }
+
+  function price() {
+    var p = answers[1].price;
+    return p ? fmtM(p[0]) + "–" + fmtM(p[1]) + " млн ₽" : "Расчёт индивидуально";
+  }
+
   function result() {
+    $("calc-price").textContent = price();
     var notes = answers.map(function (a) { return a.note; }).filter(Boolean).concat(BASE_NOTES);
     var list = $("calc-list");
     list.innerHTML = "";
@@ -471,7 +483,7 @@ footer .wrap { padding-block: 24px 32px; font-size: 0.82rem; color: var(--muted)
   }
 
   function summary() {
-    return "Оценка объёма МСФО. " + QUESTIONS.map(function (q, i) { return q.title + " — " + answers[i].label; }).join("; ") + ".";
+    return "Оценка объёма МСФО. " + QUESTIONS.map(function (q, i) { return q.title + " — " + answers[i].label; }).join("; ") + ". Ориентир по калькулятору: " + price() + ".";
   }
 
   $("calc-back").addEventListener("click", function () { if (step > 0) { step--; render(); } });
